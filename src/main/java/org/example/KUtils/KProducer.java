@@ -14,11 +14,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.Future;
+
+/**
+ * Kafka Producer Class Wrapper
+ */
 public class KProducer {
     public static final String TOPIC = "Messages";
     private static final Logger log = LoggerFactory.getLogger(KProducer.class);
-    KafkaProducer<String, String> producer;
+    private KafkaProducer<String, String> producer;
 
+    /**
+     * Initializes the Kafka Producer
+     */
     public KProducer() {
         try {
             Properties properties = loadConfig("./client.properties");
@@ -29,15 +36,30 @@ public class KProducer {
         }
     }
 
+    /**
+     * Sends a message with the producer
+     * @param s Message body
+     * @param user User Object that is sending the messege
+     */
     public void send(String s, User user){
         Message m = new Message(s, user.getName());
         sendMessageKafka(TOPIC, user.getName(), m.toString());
     }
 
+    /**
+     * Sends a messege with the producer
+     * @param m Messege Object to be sent
+     */
     public void send(Message m){
         sendMessageKafka(TOPIC, m.getFrom(), m.toString());
     }
 
+    /**
+     * Sends a message with Producer
+     * @param Topic Kafka Topic on server
+     * @param Key Key
+     * @param Value value
+     */
     private void sendMessageKafka(String Topic, String Key, String Value) {
         try {
             // Create a ProducerRecord with the topic, key, and value
@@ -59,6 +81,13 @@ public class KProducer {
         }
     }
 
+
+    /**
+     * Loads the properties for the producer
+     * @param configFile Config file path
+     * @return Properties for Kafka Producer
+     * @throws IOException In case file is not read
+     */
 
     public static Properties loadConfig(final String configFile) throws IOException {
         //Loads the config file

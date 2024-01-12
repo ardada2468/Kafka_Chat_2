@@ -2,6 +2,9 @@ package org.example.Messeging;
 
 import java.sql.Timestamp;
 
+/**
+ * Class to represent Messages
+ */
 public class Message{
 
     String Content;

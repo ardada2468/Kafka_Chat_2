@@ -1,3 +1,5 @@
+
+
 package org.example.KUtils;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -21,6 +23,9 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Wrapper class for Kafka Consumer
+ */
 public class KConsumer {
 
     KafkaConsumer<String, String> consumer;
@@ -29,8 +34,11 @@ public class KConsumer {
     private static final Logger log = LoggerFactory.getLogger(KConsumer.class);
     private User user;
 
-    private static int id = 0;
 
+    /**
+     * Inits the consumer with the properties
+     * @param User User that will send meseges
+     */
     public KConsumer(String User) {
        try{
            Properties properties = loadConfig("./client.properties");
@@ -45,11 +53,20 @@ public class KConsumer {
        }
     }
 
+    /**
+     * Converts Kafka ConsumerRecord to type Message Object
+     * @param record Record to be converted
+     * @return Messege Object with the data of record
+     */
     public Message recordToMessage(ConsumerRecord<String, String> record){
         Message m =  new Message(record.value(), record.key(), record.timestamp());
         return m;
     }
 
+    /**
+     * Updates the Display as soon as new messages populate in Kafka
+     * @param userInterface UI that is running
+     */
     public void run(UserInterface userInterface){
         try {
             consumer.subscribe(Collections.singleton(KProducer.TOPIC));
@@ -58,7 +75,7 @@ public class KConsumer {
                 records.forEach(record -> {
                     Message m = recordToMessage(record);
                     log.info(m.getContent());
-                        String myMessege = m.getTimestamp() + " " + m.getFrom() + "\t\t| " + m.getContent() + "\n";
+                        String myMessege = m.getTimestamp() + " " + m.getFrom() + "\t| " + m.getContent() + "\n";
                         userInterface.appendToChat(myMessege);
 
                 });
@@ -70,7 +87,12 @@ public class KConsumer {
     }
 
 
-
+    /**
+     * Loads the config for Kakfa Consumer
+     * @param configFile Path to Config File
+     * @return Kafka Properties
+     * @throws IOException In case we are unable to read file
+     */
     public static Properties loadConfig(final String configFile) throws IOException {
         //Loads the config file
         if (!Files.exists(Paths.get(configFile))) {

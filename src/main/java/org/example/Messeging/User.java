@@ -1,5 +1,8 @@
 package org.example.Messeging;
 
+/**
+ * Class to represent the User
+ */
 public class User {
     String Name;
 
