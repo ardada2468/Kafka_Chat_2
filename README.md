@@ -1,6 +1,10 @@
 # Quick Start
 
 ## Create a Kafka server and create a topic named Messages
+
+This is my tutorial to do it in the cloud:
+https://medium.com/@ardada2468/how-to-build-a-real-time-chat-app-with-apache-kafka-and-java-18ada7acb9bf
+
 ## Create a client.properties file with the following: 
 
 	# Required connection configs for Kafka producer, consumer, and admin  
